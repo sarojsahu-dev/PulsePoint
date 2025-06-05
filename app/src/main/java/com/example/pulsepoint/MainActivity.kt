@@ -10,6 +10,10 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.toArgb
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
+import com.example.pulsepoint.presentation.ui.HopeNearbyInputContainer
+import com.example.pulsepoint.presentation.ui.HopeNearbySuccessContainer
 import com.example.pulsepoint.presentation.ui.LaunchScreen
 import com.example.pulsepoint.presentation.viewmodels.BloodBankViewModel
 import com.example.pulsepoint.style.Purple100
@@ -21,6 +25,8 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         window.statusBarColor = Purple100.toArgb()
+
+        installSplashScreen()
 
         setContent {
             Scaffold { paddingValues ->

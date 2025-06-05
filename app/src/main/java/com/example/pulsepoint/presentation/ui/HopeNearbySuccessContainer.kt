@@ -9,19 +9,27 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.example.pulsepoint.R
 import com.example.pulsepoint.model.BloodBankData
 import com.example.pulsepoint.model.BloodType
 import com.example.pulsepoint.presentation.components.ActionIconButton
 import com.example.pulsepoint.presentation.components.BloodBankCard
+import com.example.pulsepoint.presentation.components.BloodBankDetailsSheet
 import com.example.pulsepoint.presentation.components.FilterDropdown
 import com.example.pulsepoint.presentation.components.SuccessTopBar
 import com.example.pulsepoint.presentation.navigation.BloodBankSuccess
@@ -30,6 +38,8 @@ import com.example.pulsepoint.style.Background
 import com.example.pulsepoint.style.Text04
 import com.example.pulsepoint.style.styleBody3Semibold
 
+
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HopeNearbySuccessContainer(
     searchParams: BloodBankSuccess,
@@ -37,6 +47,10 @@ fun HopeNearbySuccessContainer(
     viewModel: BloodBankViewModel
 ) {
     val availabilityList by viewModel.bloodBankAvailability.collectAsState()
+
+    var showBottomSheet by remember { mutableStateOf(false) }
+    var selectedBloodBank by remember { mutableStateOf<BloodBankData?>(null) }
+
     val sampleBloodBanks = listOf(
         BloodBankData(
             name = "Command Hospital Blood Centre, Bangalore South",
@@ -94,9 +108,44 @@ fun HopeNearbySuccessContainer(
                 )
 
                 availabilityList.data?.forEach { bloodBank ->
-                    BloodBankCard(bloodBank = bloodBank)
+                    BloodBankCard(
+                        bloodBank = bloodBank,
+                        onCardClick = {
+                            selectedBloodBank = bloodBank
+                            showBottomSheet = true
+                        }
+                    )
                 }
             }
+        }
+    }
+
+    if (showBottomSheet && selectedBloodBank != null) {
+        ModalBottomSheet(
+            onDismissRequest = {
+                showBottomSheet = false
+                selectedBloodBank = null
+            },
+            containerColor = Color.White,
+            dragHandle = null,
+        ) {
+            BloodBankDetailsSheet(
+                bloodBank = selectedBloodBank!!,
+                address = "${selectedBloodBank!!.name}, Bangalore Urban, Karnataka",
+                phoneNumber = "9972399007",
+                onCloseClick = {
+                    showBottomSheet = false
+                    selectedBloodBank = null
+                },
+                onViewInMaps = {
+                    // Handle view in maps action
+                    // You can add intent to open maps here
+                },
+                onCallNow = {
+                    // Handle call now action
+                    // You can add intent to make a call here
+                }
+            )
         }
     }
 }
