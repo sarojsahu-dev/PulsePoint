@@ -1,6 +1,5 @@
 package com.example.pulsepoint.presentation.components
 
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.DropdownMenuItem
@@ -43,7 +42,7 @@ fun FilterDropdown(
             },
             modifier = Modifier
                 .menuAnchor()
-                .width(103.dp).height(36.dp),
+                .width(103.dp),
             colors = OutlinedTextFieldDefaults.colors(
                 focusedBorderColor = Border03,
                 unfocusedBorderColor = Border03,

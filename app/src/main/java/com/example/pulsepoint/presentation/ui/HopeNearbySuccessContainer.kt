@@ -12,6 +12,8 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
@@ -21,20 +23,20 @@ import com.example.pulsepoint.model.BloodType
 import com.example.pulsepoint.presentation.components.ActionIconButton
 import com.example.pulsepoint.presentation.components.BloodBankCard
 import com.example.pulsepoint.presentation.components.FilterDropdown
-import com.example.pulsepoint.presentation.components.PulsePointTopBar
 import com.example.pulsepoint.presentation.components.SuccessTopBar
 import com.example.pulsepoint.presentation.navigation.BloodBankSuccess
+import com.example.pulsepoint.presentation.viewmodels.BloodBankViewModel
 import com.example.pulsepoint.style.Background
 import com.example.pulsepoint.style.Text04
 import com.example.pulsepoint.style.styleBody3Semibold
 
-
 @Composable
 fun HopeNearbySuccessContainer(
     searchParams: BloodBankSuccess,
-    onBackClick: () -> Unit
+    onBackClick: () -> Unit,
+    viewModel: BloodBankViewModel
 ) {
-
+    val availabilityList by viewModel.bloodBankAvailability.collectAsState()
     val sampleBloodBanks = listOf(
         BloodBankData(
             name = "Command Hospital Blood Centre, Bangalore South",
@@ -64,7 +66,8 @@ fun HopeNearbySuccessContainer(
     Scaffold(
         topBar = {
             SuccessTopBar(
-                onBackClick = onBackClick
+                onBackClick = onBackClick,
+                location = viewModel.selectedDistrict?.id.toString() + " " + viewModel.selectedState?.label.toString() + " India"
             )
         }
     ) { innerPadding ->
@@ -90,7 +93,7 @@ fun HopeNearbySuccessContainer(
                     resultCount = sampleBloodBanks.size,
                 )
 
-                sampleBloodBanks.forEach { bloodBank ->
+                availabilityList.data?.forEach { bloodBank ->
                     BloodBankCard(bloodBank = bloodBank)
                 }
             }

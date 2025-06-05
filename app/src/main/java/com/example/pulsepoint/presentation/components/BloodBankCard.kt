@@ -19,6 +19,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.example.pulsepoint.data.models.BloodBank
 import com.example.pulsepoint.model.BloodBankData
 import com.example.pulsepoint.model.BloodType
 import com.example.pulsepoint.style.BgWhite
@@ -31,7 +32,7 @@ import com.example.pulsepoint.style.styleBody2Regular
 
 @Composable
 fun BloodBankCard(
-    bloodBank: BloodBankData,
+    bloodBank: BloodBank,
     onDistanceClick: () -> Unit = {},
     onDetailsClick: () -> Unit = {}
 ) {
@@ -64,15 +65,15 @@ fun BloodBankCard(
             LazyRow(
                 horizontalArrangement = Arrangement.spacedBy(8.dp)
             ) {
-                items(bloodBank.bloodTypes) { bloodType ->
-                    BloodTypeChip(bloodType = bloodType)
+                items(bloodBank.bloodTypes.entries.toList()) { entry ->
+                    BloodTypeChip(key = entry.key, quantity = entry.value.toString())
                 }
             }
 
             Spacer(modifier = Modifier.height(16.dp))
 
             BloodBankActions(
-                distance = bloodBank.distance,
+                distance = "Not Available",
                 onDistanceClick = onDistanceClick,
                 onDetailsClick = onDetailsClick
             )
@@ -135,7 +136,7 @@ fun BloodBankCardPreview() {
         verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
         sampleBloodBanks.forEach { bloodBank ->
-            BloodBankCard(bloodBank = bloodBank)
+//            BloodBankCard(bloodBank = bloodBank)
         }
     }
 }

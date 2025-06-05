@@ -8,6 +8,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.pulsepoint.presentation.ui.HopeNearbyInputContainer
 import com.example.pulsepoint.presentation.ui.HopeNearbySuccessContainer
+import com.example.pulsepoint.presentation.viewmodels.BloodBankViewModel
 
 object Routes {
     const val BLOOD_BANK_INPUT = "blood_bank_input"
@@ -25,6 +26,7 @@ object Routes {
 
 @Composable
 fun BloodBankNavigation(
+    viewModel: BloodBankViewModel,
     navController: NavHostController = rememberNavController()
 ) {
     NavHost(
@@ -33,12 +35,13 @@ fun BloodBankNavigation(
     ) {
         composable(Routes.BLOOD_BANK_INPUT) {
             HopeNearbyInputContainer(
-                onSearchClick = { state, district, bloodGroup, bloodType ->
+                viewModel = viewModel,
+                onSearchClick = {
                     val route = Routes.createBloodBankSuccessRoute(
-                        state = state,
-                        district = district,
-                        bloodGroup = bloodGroup,
-                        bloodType = bloodType
+                        state = "state",
+                        district = "district",
+                        bloodGroup = "bloodGroup",
+                        bloodType = "bloodType"
                     )
                     navController.navigate(route)
                 }
@@ -52,6 +55,7 @@ fun BloodBankNavigation(
             val bloodType = backStackEntry.arguments?.getString("bloodType") ?: ""
 
             HopeNearbySuccessContainer(
+                viewModel = viewModel,
                 searchParams = BloodBankSuccess(
                     state = Uri.decode(state),
                     district = Uri.decode(district),
