@@ -17,20 +17,16 @@ import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.Alignment
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.core.net.toUri
 import com.example.pulsepoint.R
@@ -63,8 +59,9 @@ fun HopeNearbySuccessContainer(
     var showBottomSheet by remember { mutableStateOf(false) }
     var selectedBloodBank by remember { mutableStateOf<BloodBank?>(null) }
 
-    var showBottomSheet by remember { mutableStateOf(false) }
-    var selectedBloodBank by remember { mutableStateOf<BloodBankData?>(null) }
+    LaunchedEffect(availabilityList) {
+        bloodBankList = availabilityList.data
+    }
 
     val sampleBloodBanks = listOf(
         BloodBankData(
@@ -116,6 +113,10 @@ fun HopeNearbySuccessContainer(
                 FilterRow(
                     selectedFilter = "All Blood",
                     onFilterChange = { filter ->
+                        if (filter.contains("All Blood")) {
+                            bloodBankList = availabilityList.data
+                            return@FilterRow
+                        }
                         bloodBankList =
                             availabilityList.data?.filter { it.bloodTypes.contains(filter) }
                     },
