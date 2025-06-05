@@ -28,6 +28,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.core.net.toUri
 import com.example.pulsepoint.R
@@ -59,6 +62,9 @@ fun HopeNearbySuccessContainer(
 
     var showBottomSheet by remember { mutableStateOf(false) }
     var selectedBloodBank by remember { mutableStateOf<BloodBank?>(null) }
+
+    var showBottomSheet by remember { mutableStateOf(false) }
+    var selectedBloodBank by remember { mutableStateOf<BloodBankData?>(null) }
 
     val sampleBloodBanks = listOf(
         BloodBankData(
