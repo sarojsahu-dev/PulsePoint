@@ -4,6 +4,7 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
@@ -17,14 +18,24 @@ import com.example.pulsepoint.presentation.ui.HopeNearbyInputContainer
 import com.example.pulsepoint.presentation.ui.HopeNearbySuccessContainer
 import com.example.pulsepoint.presentation.ui.LaunchScreen
 import com.example.pulsepoint.style.Purple100
+import com.example.pulsepoint.style.Purple200
 import com.example.pulsepoint.ui.theme.PulsePointTheme
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        window.statusBarColor = Purple100.toArgb()
 
         setContent {
-            LaunchScreen()
+            Scaffold { paddingValues ->
+                Box(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(paddingValues)
+                ) {
+                    LaunchScreen()
+                }
+            }
         }
     }
 }

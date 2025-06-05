@@ -22,6 +22,7 @@ import com.example.pulsepoint.presentation.components.ActionIconButton
 import com.example.pulsepoint.presentation.components.BloodBankCard
 import com.example.pulsepoint.presentation.components.FilterDropdown
 import com.example.pulsepoint.presentation.components.PulsePointTopBar
+import com.example.pulsepoint.presentation.components.SuccessTopBar
 import com.example.pulsepoint.presentation.navigation.BloodBankSuccess
 import com.example.pulsepoint.style.Background
 import com.example.pulsepoint.style.Text04
@@ -32,7 +33,7 @@ import com.example.pulsepoint.style.styleBody3Semibold
 fun HopeNearbySuccessContainer(
     searchParams: BloodBankSuccess,
     onBackClick: () -> Unit
-){
+) {
 
     val sampleBloodBanks = listOf(
         BloodBankData(
@@ -62,7 +63,9 @@ fun HopeNearbySuccessContainer(
 
     Scaffold(
         topBar = {
-            PulsePointTopBar(title = "Search Blood Banks")
+            SuccessTopBar(
+                onBackClick = onBackClick
+            )
         }
     ) { innerPadding ->
         Column(

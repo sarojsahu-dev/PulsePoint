@@ -132,7 +132,6 @@ fun HopeNearbyInputContainer(
             }
         }
     }
-
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
