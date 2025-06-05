@@ -1,6 +1,7 @@
 package com.example.pulsepoint.presentation.components
 
 import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -33,10 +34,11 @@ import com.example.pulsepoint.style.styleBody2Regular
 fun BloodBankCard(
     bloodBank: BloodBankData,
     onDistanceClick: () -> Unit = {},
-    onDetailsClick: () -> Unit = {}
+    onDetailsClick: () -> Unit = {},
+    onCardClick: () -> Unit = {}
 ) {
     Card(
-        modifier = Modifier.fillMaxWidth(),
+        modifier = Modifier.fillMaxWidth().clickable { onCardClick() },
         shape = RoundedCornerShape(16.dp),
         colors = CardDefaults.cardColors(
             containerColor = BgWhite
