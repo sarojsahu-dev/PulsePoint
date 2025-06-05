@@ -10,6 +10,7 @@ val TextInvert = Color(0XFFF8FAFC)
 val Purple100 = Color(0XFFE4E1FA)
 val Purple200 = Color(0XFFD6D1F6)
 val Icon01 = Color(0XFF0F172A)
+val Background = Color(0XFFf4f2fe)
 
 val BgWhite = Color(0XFFFFFFFF)
 val BgBrand01 = Color(0XFF6B5CE0)
