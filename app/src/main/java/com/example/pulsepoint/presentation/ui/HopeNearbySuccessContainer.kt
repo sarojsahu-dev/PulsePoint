@@ -120,9 +120,6 @@ fun HopeNearbySuccessContainer(
                         bloodBankList =
                             availabilityList.data?.filter { it.bloodTypes.contains(filter) }
                     },
-                    onSearchClick = {},
-                    onLocationClick = {},
-                    onFilterClick = {},
                     resultCount = sampleBloodBanks.size,
                 )
 
@@ -187,9 +184,6 @@ fun navigateToGoogleMap(address: String, context: Context) {
 fun FilterRow(
     selectedFilter: String,
     onFilterChange: (String) -> Unit,
-    onSearchClick: () -> Unit,
-    onLocationClick: () -> Unit,
-    onFilterClick: () -> Unit,
     resultCount: Int
 ) {
     Row(
@@ -205,31 +199,11 @@ fun FilterRow(
                 selectedFilter = selectedFilter,
                 onFilterChange = onFilterChange
             )
-
-            ActionIconButton(
-                icon = R.drawable.ic_search,
-                contentDescription = "Search",
-                onClick = onSearchClick
-            )
-
-            ActionIconButton(
-                icon = R.drawable.ic_location,
-                contentDescription = "Location",
-                onClick = onLocationClick
-            )
-
-
-            ActionIconButton(
-                icon = R.drawable.ic_filterlist,
-                contentDescription = "Filter",
-                onClick = onFilterClick
+            Text(
+                text = "$resultCount results",
+                style = styleBody3Semibold,
+                color = Text04
             )
         }
-
-        Text(
-            text = "$resultCount results",
-            style = styleBody3Semibold,
-            color = Text04
-        )
     }
 }

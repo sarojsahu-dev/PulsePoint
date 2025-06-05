@@ -35,7 +35,6 @@ import com.example.pulsepoint.style.styleBody2Regular
 fun BloodBankCard(
     bloodBank: BloodBank,
     onDistanceClick: () -> Unit = {},
-    onDetailsClick: () -> Unit = {},
     onCardClick: () -> Unit = {}
 ) {
     Card(
@@ -79,7 +78,7 @@ fun BloodBankCard(
             BloodBankActions(
                 distance = "Navigate",
                 onDistanceClick = onDistanceClick,
-                onDetailsClick = onDetailsClick
+                onDetailsClick = onCardClick
             )
         }
     }
