@@ -23,7 +23,8 @@ import com.example.pulsepoint.style.styleBody3Medium
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun BloodTypeChip(
-    bloodType: BloodType
+    key: String,
+    quantity: String,
 ) {
     Surface(
         modifier = Modifier.wrapContentSize(),
@@ -35,7 +36,7 @@ fun BloodTypeChip(
         )
     ) {
         Text(
-            text = "${bloodType.type} (${bloodType.count})",
+            text = "${key} (${quantity})",
             style = styleBody3Medium,
             color = TextError,
             modifier = Modifier.padding(horizontal = 6.dp, vertical = 4.dp)
@@ -59,7 +60,7 @@ fun BloodTypeChipPreview() {
         horizontalArrangement = Arrangement.spacedBy(8.dp)
     ) {
         items(bloodTypes) { bloodType ->
-            BloodTypeChip(bloodType = bloodType)
+//            BloodTypeChip(bloodType = bloodType)
         }
     }
 }

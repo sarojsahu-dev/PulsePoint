@@ -33,6 +33,7 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.pulsepoint.data.models.BloodBank
 import com.example.pulsepoint.model.BloodBankData
 import com.example.pulsepoint.model.BloodType
 import com.example.pulsepoint.style.BgBrand01
@@ -48,7 +49,7 @@ import com.example.pulsepoint.style.styleBody3Semibold
 fun BloodBankDetailsSheet(
     hospitalName: String = "CMR Institute of Medical Sciences and hospitals",
     hospitalType: String = "Private",
-    bloodBank: BloodBankData,
+    bloodBank: BloodBank,
     address: String = "CMR Institute of Medical Sciences and hospitals, Vinanapura, Bnagalore Urban, Karnataka",
     phoneNumber: String = "9972399007",
     onCloseClick: () -> Unit = {},
@@ -111,8 +112,8 @@ fun BloodBankDetailsSheet(
             LazyRow(
                 horizontalArrangement = Arrangement.spacedBy(8.dp)
             ) {
-                items(bloodBank.bloodTypes) { bloodType ->
-                    BloodTypeChip(bloodType = bloodType)
+                items(bloodBank.bloodTypes.entries.toList()) { entry ->
+                    BloodTypeChip(key = entry.key, quantity = entry.value.toString())
                 }
             }
 

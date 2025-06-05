@@ -2,6 +2,8 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
+    id("com.google.dagger.hilt.android")
+    id("kotlin-kapt")
 }
 
 android {
@@ -16,6 +18,10 @@ android {
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+    }
+
+    hilt {
+        enableAggregatingTask = true
     }
 
     buildTypes {
@@ -58,4 +64,23 @@ dependencies {
     androidTestImplementation(libs.androidx.ui.test.junit4)
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
+
+    kapt(libs.room.compiler)
+    implementation(libs.room.runtime)
+    implementation(libs.room.ktx)
+    implementation(libs.google.gson)
+    implementation(libs.okhttp)
+    implementation(libs.okhttp.urlconnection)
+    implementation(libs.okhttp.logging.interceptor)
+    implementation(libs.retrofit) {
+        exclude(group = "com.google.protobuf", module = "protobuf-java")
+    }
+    api(libs.kotlinx.coroutines)
+    api(libs.brotili)
+    implementation(libs.ok2curl)
+    implementation(libs.retrofit.gson)
+    implementation(libs.haroldadmin.networkresponseadapter)
+    implementation(libs.androidx.work.runtime.ktx)
+    kapt(libs.hilt.android.compiler)
+    implementation(libs.hilt)
 }

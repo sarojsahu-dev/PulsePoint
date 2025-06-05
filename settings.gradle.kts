@@ -7,7 +7,9 @@ pluginManagement {
                 includeGroupByRegex("androidx.*")
             }
         }
+        google()
         mavenCentral()
+        mavenLocal()
         gradlePluginPortal()
     }
 }
@@ -16,9 +18,12 @@ dependencyResolutionManagement {
     repositories {
         google()
         mavenCentral()
+        maven {
+            url = uri("https://jitpack.io")
+        }
+        mavenLocal()
     }
 }
-
 rootProject.name = "PulsePoint"
 include(":app")
  
