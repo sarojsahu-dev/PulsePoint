@@ -12,6 +12,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.pulsepoint.style.BgBrand01
@@ -20,7 +21,7 @@ import com.example.pulsepoint.style.Border03
 
 @Composable
 fun ActionIconButton(
-    icon: ImageVector,
+    icon: Int,
     contentDescription: String,
     onClick: () -> Unit = {},
     iconColor: Color = BgBrand01,
@@ -43,35 +44,12 @@ fun ActionIconButton(
                 modifier = Modifier.size(24.dp)
             ) {
                 Icon(
-                    imageVector = icon,
+                    painter = painterResource(icon),
                     contentDescription = contentDescription,
                     tint = iconColor,
                     modifier = Modifier.size(20.dp)
                 )
             }
         }
-    }
-}
-
-@Preview(showBackground = true, backgroundColor = 0xFFF5F4FF)
-@Composable
-fun GenericIconButtonPreview() {
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .background(Color(0xFFF5F4FF))
-            .padding(16.dp),
-        horizontalArrangement = Arrangement.spacedBy(12.dp)
-    ) {
-        ActionIconButton(
-            icon = Icons.Default.Search,
-            contentDescription = "Search"
-        )
-
-        ActionIconButton(
-            icon = Icons.Default.LocationOn,
-            contentDescription = "Location"
-        )
-
     }
 }
