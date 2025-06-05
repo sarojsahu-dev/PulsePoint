@@ -5,7 +5,6 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -22,7 +21,6 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -33,8 +31,7 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.pulsepoint.model.BloodBankData
-import com.example.pulsepoint.model.BloodType
+import com.example.pulsepoint.data.models.BloodBank
 import com.example.pulsepoint.style.BgBrand01
 import com.example.pulsepoint.style.Text01
 import com.example.pulsepoint.style.Text03
@@ -48,7 +45,7 @@ import com.example.pulsepoint.style.styleBody3Semibold
 fun BloodBankDetailsSheet(
     hospitalName: String = "CMR Institute of Medical Sciences and hospitals",
     hospitalType: String = "Private",
-    bloodBank: BloodBankData,
+    bloodBank: BloodBank,
     address: String = "CMR Institute of Medical Sciences and hospitals, Vinanapura, Bnagalore Urban, Karnataka",
     phoneNumber: String = "9972399007",
     onCloseClick: () -> Unit = {},
@@ -111,8 +108,8 @@ fun BloodBankDetailsSheet(
             LazyRow(
                 horizontalArrangement = Arrangement.spacedBy(8.dp)
             ) {
-                items(bloodBank.bloodTypes) { bloodType ->
-                    BloodTypeChip(bloodType = bloodType)
+                items(bloodBank.bloodTypes.entries.toList()) { entry ->
+                    BloodTypeChip(key = entry.key, quantity = entry.value.toString())
                 }
             }
 

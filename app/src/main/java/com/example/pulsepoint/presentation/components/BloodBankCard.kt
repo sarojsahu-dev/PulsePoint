@@ -39,7 +39,9 @@ fun BloodBankCard(
     onCardClick: () -> Unit = {}
 ) {
     Card(
-        modifier = Modifier.fillMaxWidth().clickable { onCardClick() },
+        modifier = Modifier
+            .fillMaxWidth()
+            .clickable { onCardClick() },
         shape = RoundedCornerShape(16.dp),
         colors = CardDefaults.cardColors(
             containerColor = BgWhite
@@ -50,7 +52,7 @@ fun BloodBankCard(
             modifier = Modifier.padding(16.dp)
         ) {
             BloodBankHeader(
-                type = bloodBank.type,
+                type = bloodBank.category,
                 lastUpdated = bloodBank.lastUpdated
             )
 
@@ -75,7 +77,7 @@ fun BloodBankCard(
             Spacer(modifier = Modifier.height(16.dp))
 
             BloodBankActions(
-                distance = "Not Available",
+                distance = "Navigate",
                 onDistanceClick = onDistanceClick,
                 onDetailsClick = onDetailsClick
             )

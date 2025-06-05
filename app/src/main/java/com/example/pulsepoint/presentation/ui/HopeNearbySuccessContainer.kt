@@ -1,5 +1,8 @@
 package com.example.pulsepoint.presentation.ui
 
+import android.content.Context
+import android.content.Intent
+import android.net.Uri
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -16,7 +19,6 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -25,8 +27,11 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
+import androidx.core.net.toUri
 import com.example.pulsepoint.R
+import com.example.pulsepoint.data.models.BloodBank
 import com.example.pulsepoint.model.BloodBankData
 import com.example.pulsepoint.model.BloodType
 import com.example.pulsepoint.presentation.components.ActionIconButton
@@ -49,9 +54,11 @@ fun HopeNearbySuccessContainer(
     viewModel: BloodBankViewModel
 ) {
     val availabilityList by viewModel.bloodBankAvailability.collectAsState()
+    var bloodBankList by remember { mutableStateOf(availabilityList.data) }
+    val context = LocalContext.current
 
     var showBottomSheet by remember { mutableStateOf(false) }
-    var selectedBloodBank by remember { mutableStateOf<BloodBankData?>(null) }
+    var selectedBloodBank by remember { mutableStateOf<BloodBank?>(null) }
 
     val sampleBloodBanks = listOf(
         BloodBankData(
@@ -102,16 +109,22 @@ fun HopeNearbySuccessContainer(
             ) {
                 FilterRow(
                     selectedFilter = "All Blood",
-                    onFilterChange = {},
+                    onFilterChange = { filter ->
+                        bloodBankList =
+                            availabilityList.data?.filter { it.bloodTypes.contains(filter) }
+                    },
                     onSearchClick = {},
                     onLocationClick = {},
                     onFilterClick = {},
                     resultCount = sampleBloodBanks.size,
                 )
 
-                availabilityList.data?.forEach { bloodBank ->
+                bloodBankList?.forEach { bloodBank ->
                     BloodBankCard(
                         bloodBank = bloodBank,
+                        onDistanceClick = {
+                            navigateToGoogleMap(bloodBank.address, context = context)
+                        },
                         onCardClick = {
                             selectedBloodBank = bloodBank
                             showBottomSheet = true
@@ -133,13 +146,16 @@ fun HopeNearbySuccessContainer(
         ) {
             BloodBankDetailsSheet(
                 bloodBank = selectedBloodBank!!,
-                address = "${selectedBloodBank!!.name}, Bangalore Urban, Karnataka",
-                phoneNumber = "9972399007",
+                hospitalName = selectedBloodBank?.name ?: "Name",
+                address = selectedBloodBank?.address ?: "Address Not Available",
+                hospitalType = selectedBloodBank?.category ?: "Not Available",
+                phoneNumber = selectedBloodBank?.phone ?: "Not Available",
                 onCloseClick = {
                     showBottomSheet = false
                     selectedBloodBank = null
                 },
                 onViewInMaps = {
+                    navigateToGoogleMap(selectedBloodBank?.address ?: "", context = context)
                     // Handle view in maps action
                     // You can add intent to open maps here
                 },
@@ -150,6 +166,14 @@ fun HopeNearbySuccessContainer(
             )
         }
     }
+}
+
+fun navigateToGoogleMap(address: String, context: Context) {
+    val encodedAddress = Uri.encode(address)
+    val gmmIntentUri = "geo:0,0?q=$encodedAddress".toUri()
+    val mapIntent = Intent(Intent.ACTION_VIEW, gmmIntentUri)
+    mapIntent.setPackage("com.google.android.apps.maps")
+    context.startActivity(mapIntent)
 }
 
 @Composable
