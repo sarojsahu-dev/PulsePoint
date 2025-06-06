@@ -29,11 +29,9 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.core.net.toUri
-import com.example.pulsepoint.R
 import com.example.pulsepoint.data.models.BloodBank
 import com.example.pulsepoint.model.BloodBankData
 import com.example.pulsepoint.model.BloodType
-import com.example.pulsepoint.presentation.components.ActionIconButton
 import com.example.pulsepoint.presentation.components.BloodBankCard
 import com.example.pulsepoint.presentation.components.BloodBankDetailsSheet
 import com.example.pulsepoint.presentation.components.FilterDropdown
@@ -118,7 +116,14 @@ fun HopeNearbySuccessContainer(
                             return@FilterRow
                         }
                         bloodBankList =
-                            availabilityList.data?.filter { it.bloodTypes.contains(filter) }
+                            availabilityList.data?.filter {
+                                it.bloodTypes.keys.any { key ->
+                                    key.contains(
+                                        filter,
+                                        ignoreCase = true
+                                    )
+                                }
+                            }
                     },
                     resultCount = sampleBloodBanks.size,
                 )
