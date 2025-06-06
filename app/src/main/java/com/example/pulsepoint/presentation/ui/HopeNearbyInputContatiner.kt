@@ -51,7 +51,6 @@ fun HopeNearbyInputContainer(
 ) {
     var selectedState by remember { mutableStateOf<BloodBankStateList.BloodBankStateListItem?>(null) }
     var selectedDistrict by remember { mutableStateOf<BloodBankDistrictList.Record?>(null) }
-    var selectedBloodGroup by remember { mutableStateOf("All Blood Groups") }
     var selectedBloodType by remember { mutableStateOf("Whole Blood") }
 
     LaunchedEffect(Unit) {
@@ -65,7 +64,7 @@ fun HopeNearbyInputContainer(
 
     Scaffold(
         topBar = {
-            PulsePointTopBar(title = "Search Blood Banks")
+            PulsePointTopBar(title = "Search for blood banks")
         }
     ) { paddingValues ->
         Column(
@@ -77,7 +76,7 @@ fun HopeNearbyInputContainer(
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
             Text(
-                text = "Choose here",
+                text = "Select location",
                 style = styleBody1Semibold,
                 color = Text01
             )
@@ -101,7 +100,8 @@ fun HopeNearbyInputContainer(
                 onSelectionChange = {
                     viewModel.selectedDistrict = it
                     selectedDistrict = it
-                }
+                },
+                isHighlighted = true
             )
 
 //            // Blood Group Dropdown
@@ -111,12 +111,20 @@ fun HopeNearbyInputContainer(
 //                onSelectionChange = { selectedBloodGroup = it }
 //            )
 
+            Spacer(Modifier.height(24.dp))
+
+            Text(
+                text = "Select Blood Component",
+                style = styleBody1Semibold,
+                color = Text01
+            )
+
             // Blood Type Dropdown
             DropdownField(
                 label = selectedBloodType,
                 options = bloodTypes,
                 onSelectionChange = { selectedBloodType = it },
-                isHighlighted = false
+                isHighlighted = true
             )
 
             Spacer(modifier = Modifier.height(8.dp))
@@ -131,15 +139,6 @@ fun HopeNearbyInputContainer(
                         viewModel.getBloodAvailability()
                         onSearchClick()
                     }
-//                    if (selectedState != "Select State" &&
-//                        selectedDistrict != "Select District") {
-//                        onSearchClick(
-//                            selectedState,
-//                            selectedDistrict,
-//                            selectedBloodGroup,
-//                            selectedBloodType
-//                        )
-//                    }
                 },
                 colors = ButtonDefaults.buttonColors(
                     containerColor = BgBrand01
