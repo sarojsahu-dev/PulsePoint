@@ -10,6 +10,7 @@ import com.example.pulsepoint.data.models.BloodBankDataResponse
 import com.example.pulsepoint.data.models.BloodBankDistrictList
 import com.example.pulsepoint.data.models.BloodBankParser
 import com.example.pulsepoint.data.models.BloodBankStateList
+import com.example.pulsepoint.data.models.BloodDonationCampsResponse
 import com.example.pulsepoint.data.remote.repositories.BloodBankRepository
 import com.example.pulsepoint.utils.Response
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -17,6 +18,9 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
 import javax.inject.Inject
 
 @HiltViewModel
@@ -38,6 +42,10 @@ class BloodBankViewModel @Inject constructor(
     private val _bloodBankList =
         MutableStateFlow<Response<BloodBankDataResponse>>(Response.Loading())
     val bloodBankList = _bloodBankList.asStateFlow()
+
+    private val _bloodDonationCamps =
+        MutableStateFlow<Response<BloodDonationCampsResponse>>(Response.Loading())
+    val bloodDonationCamps = _bloodDonationCamps.asStateFlow()
 
     var selectedState: BloodBankStateList.BloodBankStateListItem? = null
     var selectedDistrict: BloodBankDistrictList.Record? = null
@@ -169,6 +177,59 @@ class BloodBankViewModel @Inject constructor(
             }
         }
     }
+
+    fun getBloodDonationCamps(
+        stateCode: String? = null,
+        districtCode: String? = null,
+        campDate: String? = null
+    ) {
+        viewModelScope.launch {
+            _bloodDonationCamps.value = Response.Loading()
+
+            val finalStateCode = stateCode ?: selectedState?.value?.toString() ?: "24"
+            val finalDistrictCode = districtCode ?: selectedDistrict?.value?.toString() ?: "474"
+            val finalCampDate = campDate ?: getCurrentDateFormatted()
+
+            val response = repository.getBloodDonationCamps(
+                stateCode = finalStateCode,
+                districtCode = finalDistrictCode,
+                campDate = finalCampDate
+            )
+            _bloodDonationCamps.value = response
+
+            when (response) {
+                is Response.Loading -> {
+                    Log.d("BloodBankViewModel", "Loading blood donation camps...")
+                }
+
+                is Response.Success -> {
+                    Log.d(
+                        "BloodBankViewModel",
+                        "Successfully fetched blood donation camps: ${response.data}"
+                    )
+                    response.data?.let { campsResponse ->
+                        Log.d("BloodBankViewModel", "Total camps found: ${campsResponse.totalCamps}")
+                        campsResponse.camps.forEach { camp ->
+                            Log.d("BloodBankViewModel", "Camp: ${camp.campName} at ${camp.location}")
+                        }
+                    }
+                }
+
+                is Response.Error -> {
+                    Log.d(
+                        "BloodBankViewModel",
+                        "Error fetching blood donation camps: ${response.message}"
+                    )
+                }
+            }
+        }
+    }
+
+    private fun getCurrentDateFormatted(): String {
+        val sdf = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+        return sdf.format(Date())
+    }
+
 
     fun showToast(message: String) {
         viewModelScope.launch(Dispatchers.Main) {
